@@ -92,3 +92,9 @@ And you need to customize the following connection string to your needs in the A
 
 Migrations
 ==========
+Migrations are stored in the DataModel project. All migrations are applied automatically by the "MigrateDatabaseToLatestVersion" context initializer.
+
+When you change the data model, you should run the "Add-Migration <migration name>" command in the Package Manager Console (in Visual Studio). Make sure you selected the DataModel project in the head of the Package Manager Console. It a good practice to give the migration a name which describes the changes you made (e.g. AddedNotesToFilmObject). This will generate the necessary migration files. They will run next time when you access the database.
+
+It is also good to know, that the Seed method in the Configuration.cs run every time you access the DB for the first time whithin your application.
+
