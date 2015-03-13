@@ -38,10 +38,57 @@ And you need to customize the following connection string to your needs in the A
 
 Microsoft SQL Compact Edition 4.0
 ---------------------------------
+This is fairly easy to configure and well-supported.
+
+You need the following NuGet packages to be installed:
+* [EntityFramework](http://www.nuget.org/packages/EntityFramework/)
+* [EntityFramework.SqlServerCompact](http://www.nuget.org/packages/EntityFramework.SqlServerCompact/)
+* [Microsoft.SqlServer.Compact](http://www.nuget.org/packages/Microsoft.SqlServer.Compact/)
+
+You need to have these lines in the App.config of both the DataModel and Main projects:
+
+    <entityFramework>
+      <providers>
+        <provider invariantName="System.Data.SqlServerCe.4.0" type="System.Data.Entity.SqlServerCompact.SqlCeProviderServices, EntityFramework.SqlServerCompact" />
+      </providers>
+    </entityFramework>
+     <system.data>
+      <DbProviderFactories>
+        <remove invariant="System.Data.SqlServerCe.4.0" />
+        <add name="Microsoft SQL Server Compact Data Provider 4.0" invariant="System.Data.SqlServerCe.4.0" description=".NET Framework Data Provider for Microsoft SQL Server Compact" type="System.Data.SqlServerCe.SqlCeProviderFactory, System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+      </DbProviderFactories>
+     </system.data>
+
+And you need to customize the following connection string to your needs in the App.config of the Main project:
+
+    <add name="StorageTest.DataModel.DvdContext" providerName="System.Data.SqlServerCe.4.0" connectionString="Data Source=|DataDirectory|DVDDatabase.sdf" />
 
 SQLite
 ------
+This is more difficult to configure and migrations are not supported. SQLite outperforms SQL Compact Edition though.
 
+You need the following NuGet packages to be installed:
+* [EntityFramework](http://www.nuget.org/packages/EntityFramework/)
+* [System.Data.SQLite.Core](http://www.nuget.org/packages/System.Data.SQLite.Core/)
+* [System.Data.SQLite.EF6](http://www.nuget.org/packages/System.Data.SQLite.EF6/)
+
+You need to have these lines in the App.config of both the DataModel and Main projects:
+
+    <entityFramework>
+      <providers>
+        <provider invariantName="System.Data.SQLite.EF6" type="System.Data.SQLite.EF6.SQLiteProviderServices, System.Data.SQLite.EF6" />
+      </providers>
+    </entityFramework>
+     <system.data>
+      <DbProviderFactories>
+        <remove invariant="System.Data.SQLite.EF6" />
+        <add name="SQLite Data Provider (Entity Framework 6)" invariant="System.Data.SQLite.EF6" description=".NET Framework Data Provider for SQLite (Entity Framework 6)" type="System.Data.SQLite.EF6.SQLiteProviderFactory, System.Data.SQLite.EF6" />
+      </DbProviderFactories>
+     </system.data>
+
+And you need to customize the following connection string to your needs in the App.config of the Main project:
+
+    <add name="StorageTest.DataModel.DvdContext" providerName="System.Data.SQLite.EF6" connectionString="Data Source=|DataDirectory|DVDDatabase.sqlite" />
 
 Migrations
 ==========
