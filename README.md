@@ -1,6 +1,6 @@
 # Entity Framework 6 - Storage Test Console Application
 
-Entity Framework 6 sample application with configurations for various storages.
+This is an Entity Framework 6 sample application with configurations for various storages.
 
 There are two projects in the solution DataModel (which contains the data model and the EF migrations files) and Main console application.
 
