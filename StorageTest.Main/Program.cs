@@ -26,10 +26,13 @@ namespace StorageTest.Test
                     System.Data.Entity.Database dbObject = db.Database;
 
                     Console.WriteLine();
-                    Console.WriteLine(String.Format("{0,25}: {1}", "Data Directory", AppDomain.CurrentDomain.GetData("DataDirectory").ToString()));
                     Console.WriteLine(String.Format("{0,25}: {1}", "Type of connection", dbObject.Connection.GetType().ToString()));
                     Console.WriteLine(String.Format("{0,25}: '{1}'", "Connection string", dbObject.Connection.ConnectionString));
-                    Console.WriteLine(String.Format("{0,25}: {1}", "Server version", dbObject.Connection.ServerVersion));
+                    if (dbObject.Connection is System.Data.SqlServerCe.SqlCeConnection)
+                    {
+                        Console.WriteLine(String.Format("{0,25}: {1}", "Data Directory", AppDomain.CurrentDomain.GetData("DataDirectory").ToString()));
+                        Console.WriteLine(String.Format("{0,25}: {1}", "Server version", dbObject.Connection.ServerVersion));
+                    }
                     Console.WriteLine();
 
                     Console.WriteLine("Gettings film genres...");
@@ -37,15 +40,28 @@ namespace StorageTest.Test
                     Genre actionGenre = db.Genres.Where(g => g.Name == "Action").SingleOrDefault();
                     Genre scifiGenre = db.Genres.Where(g => g.Name == "SciFi").SingleOrDefault();
 
-                    Console.WriteLine("Getting J. J. Abrams as producer...");
+                    Console.WriteLine("Getting J. J. Abrams the producer...");
                     // find the producer
                     Producer jjAbrams = db.Producers.Include("Films").Where(p => p.FullName == "J.J. Abrams").SingleOrDefault();
                     // we found the producer
                     if (jjAbrams != null)
                     {
-                        if (jjAbrams.Films.Count <= 1)
+                        if (jjAbrams.Films.Count == 0)
                         {
-                            Film film1 = db.Films.FirstOrDefault(f => f.Title.StartsWith("Mission"));
+                            // and add a film
+                            Film film1 = new Film()
+                            {
+                                Title = "Mission: Impossible III",
+                                ReleaseYear = 2006,
+                                Duration = 126,
+                                Story = "Ethan Hunt comes face to face with a dangerous and ...",
+                                Genre = actionGenre
+                            };
+                            film1.Producers = new List<Producer>();
+                            film1.Producers.Add(jjAbrams);
+
+                            db.Films.Add(film1);
+                           
 
                             // add some films to that producer
                             Console.WriteLine("Adding 'Star Trek Into Darkness' as his film...");
@@ -60,7 +76,7 @@ namespace StorageTest.Test
                             
                             film2.Producers = new List<Producer>();
                             film2.Producers.Add(jjAbrams);
-                            
+
                             film2.Notes = new List<Note>();
                             film2.Notes.Add(new Note() { Text = "Was it a good film?" });
                             film2.Notes.Add(new Note() { Text = "Well, I liked it!" });

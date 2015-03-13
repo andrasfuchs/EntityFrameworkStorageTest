@@ -25,7 +25,7 @@ namespace StorageTest.DataModel
         
         [Required]
         public int Duration { get; set; }
-                
+
         [InverseProperty("Film")]
         public virtual ICollection<Note> Notes { get; set; }
 
