@@ -65,7 +65,7 @@ And you need to customize the following connection string to your needs in the A
 
 SQLite
 ------
-This is more difficult to configure and migrations are not supported. SQLite outperforms SQL Compact Edition though.
+This is more difficult to configure and _migrations are not supported_. SQLite outperforms SQL Compact Edition though.
 
 You need the following NuGet packages to be installed:
 * [EntityFramework](http://www.nuget.org/packages/EntityFramework/)
