@@ -1,6 +1,7 @@
 ﻿using StorageTest.DataModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -14,7 +15,12 @@ namespace StorageTest.Test
             // AppDomain.CurrentDomain.SetData("DataDirectory", Server.MapPath("~/App_Data/"));
 
             // for desktop apps this:
-            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory + "App_Data\\");
+            string dataDir = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\";
+            if (!Directory.Exists(dataDir))
+            {
+                Directory.CreateDirectory(dataDir);
+            }
+            AppDomain.CurrentDomain.SetData("DataDirectory", dataDir);
 
 
             Console.Write("Opening DB Context...");
